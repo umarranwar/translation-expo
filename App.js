@@ -1,47 +1,26 @@
+// App.js
 import React from "react";
-import { View, Text, Button } from "react-native";
-import enTranslations from "./src/locales/en";
-import arTranslations from "./src/locales/ar";
-import * as Localization from "expo-localization";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-const App = () => {
-  const [currentLocale, setCurrentLocale] = React.useState(Localization.locale);
-  const [translations, setTranslations] = React.useState(
-    currentLocale.startsWith("en") ? enTranslations : arTranslations
-  );
+import HomeScreen from "./src/screens/HomeScreen";
+import DetailsScreen from "./src/screens/DetailsScreen";
 
-  const handleLanguageChange = (newLocale) => {
-    setCurrentLocale(newLocale);
-    setTranslations(
-      newLocale.startsWith("en") ? enTranslations : arTranslations
-    );
-  };
 
+const Stack = createStackNavigator();
+
+export default function App() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        margin: 50,
-        alignItems: "center",
-      }}
-    >
-      <Text style={{ fontSize: 30 , marginBottom:30 }}>{translations.welcome}</Text>
-      
-      {currentLocale.startsWith("en") ? (
-        <Button
-          title="Switch to Arabic"
-          onPress={() => handleLanguageChange("ar")}
-        />
-      ) : (
-        <Button
-          title="Switch to English"
-          onPress={() => handleLanguageChange("en")}
-        />
-      )}
-      {/* Add more buttons for other languages */}
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+        initialRouteName="Home"
+      >
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-};
-
-export default App;
+}
